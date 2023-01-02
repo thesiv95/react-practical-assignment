@@ -8,8 +8,11 @@ export const postsSlice = createSlice({
   },
   reducers: {
     getByPage: (state, payload) => {
-      const { pageNumber } = payload
-      doAPIRequest(`/post/page/${pageNumber}`).then((data) => state.posts.value = data)
+      const { pageNumber = 1 } = payload
+      doAPIRequest(`/post/page/${pageNumber}`).then((data) => {
+        state.posts.value = data
+        console.log('getByPage', state.posts.value)
+      })
     },
     getByQuery: (state, payload) => {
         const { keyWord } = payload
@@ -17,6 +20,9 @@ export const postsSlice = createSlice({
     },
     addNew: (state, payload) => {
       doAPIRequest('/post', 'post', payload.body).then((data) => state.posts.value.push(data))
+    },
+    uploadImage: (state, payload) => {
+
     },
     edit: (state, payload) => {
         const { id } = payload

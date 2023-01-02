@@ -2,7 +2,6 @@ import React from 'react'
 import { DateTime } from 'luxon'
 import { Grid } from '@mui/material'
 import Post from './Post/Post'
-// import { getByPage } from '../redux/postsSlice'
 
 const blankImageURL = 'img-placeholder.jpg'
 
@@ -15,51 +14,8 @@ function parseDate(dateMs = Date.now()) {
     return DateTime.fromMillis(dateMs).toFormat('yyyy LLL dd HH:mm')
 }
 
-function PostsList() {
-
-    // const posts = useSelector((state) => state.posts.value)
-    // const dispatch = useDispatch()
-    // const postsList = dispatch(() => getByPage())
-    // console.log(postsList);
-    const posts = [
-        {
-            "id": 1,
-            "title": "Tets 1",
-            "username": "demo",
-            "likes": [],
-            "dislikes": [],
-            "date": "1672661953277",
-            "comments": []
-        },
-        {
-            "id": 2,
-            "title": "Tets 2",
-            "username": "demo1",
-            "likes": [],
-            "dislikes": [],
-            "date": "1672662288786",
-            "comments": []
-        },
-        {
-            "id": 3,
-            "title": "Tets 2",
-            "username": "demo1",
-            "likes": [],
-            "dislikes": [],
-            "date": "1672662288786",
-            "comments": []
-        },
-        {
-            "id": 4,
-            "title": "Tets 2",
-            "username": "demo1",
-            "likes": [],
-            "dislikes": [],
-            "date": "1672662288786",
-            "comments": []
-        }
-    ]
-
+function PostsList({ posts }) {
+    if (!posts || posts.length === 0) return null
     const postsMapped = posts.map(post => {
         return (
             <Grid item key={post.id + 1}>
