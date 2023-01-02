@@ -80,6 +80,12 @@ function Post({
     const [openComment, setOpenComment] = React.useState(false);
     const handleOpenComment = () => setOpenComment(true);
     const handleCloseComment = () => setOpenComment(false);
+
+    let [postVotes, setPostVotes] = React.useState(0);
+    const handleLike = () => setPostVotes(postVotes += 1);
+    const handleDislike = () => setPostVotes(postVotes -= 1);
+    
+    React.useEffect(() => setPostVotes(votes), [votes]);
     
     return (
         <Card sx={{ maxWidth: 345 }}>
@@ -108,11 +114,11 @@ function Post({
                 </Typography>
             </CardContent>
             <CardActions disableSpacing>
-                votes: {votes}
-                <IconButton aria-label="like">
+                votes: {postVotes}
+                <IconButton aria-label="like" onClick={handleLike}>
                     <ThumbUp />
                 </IconButton>
-                <IconButton aria-label="dislike">
+                <IconButton aria-label="dislike" onClick={handleDislike}>
                     <ThumbDownAlt />
                 </IconButton>
                 <IconButton aria-label="add_comment" onClick={handleOpenComment}>
