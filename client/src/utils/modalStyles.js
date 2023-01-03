@@ -10,4 +10,4 @@ const modalStyles = {
     p: 4,
 };
 
-export default modalStyles;
+export default modalStyles

@@ -1,7 +1,7 @@
-import React from "react";
-import { Link } from "react-router-dom";
-import { Button, Grid } from "@mui/material";
-import * as LocalStorageManager from "../../utils/localStorageManager";
+import React from "react"
+import { Link } from "react-router-dom"
+import { Button, Grid } from "@mui/material"
+import * as LocalStorageManager from "../../utils/localStorageManager"
 
 function Header({ username = "Guest", isLogin = false }) {
   return isLogin ? null : (
@@ -17,7 +17,7 @@ function Header({ username = "Guest", isLogin = false }) {
         </Link>
       </Grid>
     </Grid>
-  );
+  )
 }
 
-export default Header;
+export default Header

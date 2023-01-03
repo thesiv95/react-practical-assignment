@@ -6,10 +6,10 @@
  * @param {style} text 
  */
 const showAlert = (elId, text) => {
-    const errorMsg = document.getElementById(elId);
-    errorMsg.style.display = 'block';
-    errorMsg.innerHTML = text;
-    setTimeout(() => errorMsg.style.display = 'none', 3000);
+    const errorMsg = document.getElementById(elId)
+    errorMsg.style.display = 'block'
+    errorMsg.innerHTML = text
+    setTimeout(() => errorMsg.style.display = 'none', 3000)
 }
 
 export default showAlert

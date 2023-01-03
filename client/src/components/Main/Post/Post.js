@@ -1,6 +1,6 @@
 /* eslint-disable no-mixed-operators */
-import * as React from "react";
-import { styled } from "@mui/material/styles";
+import * as React from "react"
+import { styled } from "@mui/material/styles"
 import {
     Box,
     Button,
@@ -18,8 +18,8 @@ import {
     RadioGroup,
     FormControlLabel,
     FormControl
-} from "@mui/material";
-import { green } from "@mui/material/colors";
+} from "@mui/material"
+import { green } from "@mui/material/colors"
 import {
     AddComment,
     Delete,
@@ -27,31 +27,31 @@ import {
     ThumbUp,
     ThumbDownAlt,
     ExpandMore as ExpandMoreIcon,
-} from "@mui/icons-material";
-import PostComment from "./PostComment";
-import modalStyles from "../../../utils/modalStyles";
-import * as LocalStorageManager from "../../../utils/localStorageManager";
-import CommentEdit from "./Modals/CommentEdit";
-import * as PostRequest from "../../../api/postsRequest";
-import * as CommentRequest from "../../../api/commentsRequest";
+} from "@mui/icons-material"
+import PostComment from "./PostComment"
+import modalStyles from "../../../utils/modalStyles"
+import * as LocalStorageManager from "../../../utils/localStorageManager"
+import CommentEdit from "./Modals/CommentEdit"
+import * as PostRequest from "../../../api/postsRequest"
+import * as CommentRequest from "../../../api/commentsRequest"
 
 /**
  * Props for comments section
  */
 const ExpandMore = styled((props) => {
-    const { expand, ...other } = props;
-    return <IconButton {...other} />;
+    const { expand, ...other } = props
+    return <IconButton {...other} />
 })(({ theme, expand }) => ({
     transform: !expand ? "rotate(0deg)" : "rotate(180deg)",
     marginLeft: "auto",
     transition: theme.transitions.create("transform", {
         duration: theme.transitions.duration.shortest,
     }),
-}));
+}))
 
 // Component itself
 
-const getFirstLetterForAvatar = (name) => name[0];
+const getFirstLetterForAvatar = (name) => name[0]
 
 const currentUser = LocalStorageManager.read()
 
@@ -71,7 +71,7 @@ function Post({
     const [expanded, setExpanded] = React.useState(false)
     const handleExpandClick = () => {
         setExpanded(!expanded)
-    };
+    }
 
     // Post
     const [openEdit, setOpenEdit] = React.useState(false)
@@ -99,11 +99,11 @@ function Post({
     const inputRef = React.useRef(null)
 
     const handleUploadClick = () => {
-        inputRef.current?.click();
+        inputRef.current?.click()
      }
      const handleFileChange = (e) => {
-        if (!e.target.files) return;
-        setFile(e.target.files[0]);
+        if (!e.target.files) return
+        setFile(e.target.files[0])
         PostRequest.uploadImage({ picture: file, id })
       }
 
@@ -251,7 +251,7 @@ function Post({
             </CardActions>
             <PostComment comments={comments} text={''} date={timestamp} expanded={expanded} />
         </Card>
-    );
+    )
 }
 
-export default Post;
+export default Post

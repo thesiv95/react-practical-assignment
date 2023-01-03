@@ -1,17 +1,17 @@
-import React from "react";
-import { Alert, Button, TextField } from "@mui/material";
-import { useNavigate } from "react-router-dom";
-import Footer from "./common/Footer";
-import Header from "./common/Header";
-import * as LocalStorageManager from "../utils/localStorageManager";
-import showAlert from "../utils/showAlert";
+import React from "react"
+import { Alert, Button, TextField } from "@mui/material"
+import { useNavigate } from "react-router-dom"
+import Footer from "./common/Footer"
+import Header from "./common/Header"
+import * as LocalStorageManager from "../utils/localStorageManager"
+import showAlert from "../utils/showAlert"
 
 
 function Login() {
-  const navigate = useNavigate();
-  const DEMO_DATA = "demo";
-  const [loginValue, setLoginValue] = React.useState("");
-  const [passwordValue, setPasswordValue] = React.useState("");
+  const navigate = useNavigate()
+  const DEMO_DATA = "demo"
+  const [loginValue, setLoginValue] = React.useState("")
+  const [passwordValue, setPasswordValue] = React.useState("")
 
   return (
     <>
@@ -41,13 +41,13 @@ function Login() {
                     type="submit"
                     variant="outlined"
                     onClick={(e) => {
-                        e.preventDefault();
+                        e.preventDefault()
                         if (loginValue === DEMO_DATA && passwordValue === '') {
-                            console.log("Demo login succeeded");
-                            LocalStorageManager.write(DEMO_DATA);
-                            navigate("/posts");
+                            console.log("Demo login succeeded")
+                            LocalStorageManager.write(DEMO_DATA)
+                            navigate("/posts")
                         } else {
-                            showAlert('errorMsg', 'Please enter valid credentials - user demo w/o password');
+                            showAlert('errorMsg', 'Please enter valid credentials - user demo w/o password')
                         }
                     }}
                 >Log In</Button>
@@ -55,7 +55,7 @@ function Login() {
         </form>
       <Footer />
     </>
-  );
+  )
 }
 
-export default Login;
+export default Login

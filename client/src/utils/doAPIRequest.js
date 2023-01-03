@@ -1,6 +1,6 @@
-import axios from 'axios';
+import axios from 'axios'
 
-const baseURL = 'http://localhost:8080'; // change here if required
+const baseURL = 'http://localhost:8080' // change here if required
 
 /**
  * One wrapper for sending requests to backend and getting response from it
@@ -31,4 +31,4 @@ body: ${body ? JSON.stringify(body) : '(no body)'}
     }
 }
 
-export default doAPIRequest;
+export default doAPIRequest

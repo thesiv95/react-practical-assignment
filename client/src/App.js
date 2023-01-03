@@ -1,10 +1,10 @@
-import {useEffect} from 'react';
+import {useEffect} from 'react'
 import {Routes, Route } from 'react-router-dom'
-import { Container } from '@mui/material';
-import './App.css';
-import doAPIRequest from './utils/doAPIRequest';
-import Main from './components/Main';
-import Login from './components/Login';
+import { Container } from '@mui/material'
+import './App.css'
+import doAPIRequest from './utils/doAPIRequest'
+import Main from './components/Main'
+import Login from './components/Login'
 import NullElement from './Null' // empty page
 
 
@@ -12,8 +12,8 @@ function App() {
 
   useEffect(() => {
     // TEST API, it might be removed
-    doAPIRequest('/live').then(res => console.log(res)).catch(e => console.error(e));
-  }, []);
+    doAPIRequest('/live').then(res => console.log(res)).catch(e => console.error(e))
+  }, [])
 
   return (
     <div className="App">
@@ -25,7 +25,7 @@ function App() {
         </Routes>
       </Container>
     </div>
-  );
+  )
 }
 
-export default App;
+export default App
