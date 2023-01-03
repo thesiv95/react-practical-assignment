@@ -1,3 +1,4 @@
+/* eslint-disable no-mixed-operators */
 import * as React from "react";
 import { styled } from "@mui/material/styles";
 import {
@@ -13,6 +14,10 @@ import {
     Typography,
     Modal,
     TextField,
+    Radio,
+    RadioGroup,
+    FormControlLabel,
+    FormControl
 } from "@mui/material";
 import { green } from "@mui/material/colors";
 import {
@@ -26,8 +31,9 @@ import {
 import PostComment from "./PostComment";
 import modalStyles from "../../../utils/modalStyles";
 import * as LocalStorageManager from "../../../utils/localStorageManager";
-import RadioEdit from "./Modals/RadioEdit";
 import CommentEdit from "./Modals/CommentEdit";
+import * as PostRequest from "../../../api/postsRequest";
+import * as CommentRequest from "../../../api/commentsRequest";
 
 /**
  * Props for comments section
@@ -49,16 +55,8 @@ const getFirstLetterForAvatar = (name) => name[0];
 
 const currentUser = LocalStorageManager.read()
 
-const handlePostForm = () => {
-    const postOption = document.getElementById('post_option');
-    const postTitle = document.getElementById('post_title');
-    const postValue = document.getElementById('post_value');
-    console.log(postOption);
-    console.log(postTitle);
-    console.log(postValue);
-}
-
 function Post({
+    id,
     title,
     author = "Guest",
     votes,
@@ -67,25 +65,74 @@ function Post({
     image,
     comments,
 }) {
-    const shouldDisableBtn = author !== currentUser;
-    const [expanded, setExpanded] = React.useState(false);
+    // Restrict user from editing others posts
+    const shouldDisableBtn = author !== currentUser
+    // Comment section button (MUI framework technique)
+    const [expanded, setExpanded] = React.useState(false)
     const handleExpandClick = () => {
-        setExpanded(!expanded);
+        setExpanded(!expanded)
     };
 
-    const [openEdit, setOpenEdit] = React.useState(false);
-    const handleOpenEdit = () => setOpenEdit(true);
-    const handleCloseEdit = () => setOpenEdit(false);
+    // Post
+    const [openEdit, setOpenEdit] = React.useState(false)
+    const handleOpenEdit = () => setOpenEdit(true)
+    const handleCloseEdit = () => setOpenEdit(false)
 
-    const [openComment, setOpenComment] = React.useState(false);
-    const handleOpenComment = () => setOpenComment(true);
-    const handleCloseComment = () => setOpenComment(false);
+    const [postTitle, setPostTitle] = React.useState('')
+    let createMode = false
 
-    let [postVotes, setPostVotes] = React.useState(0);
-    const handleLike = () => setPostVotes(postVotes += 1);
-    const handleDislike = () => setPostVotes(postVotes -= 1);
+    // Comment modal
+    const [openComment, setOpenComment] = React.useState(false)
+    const handleOpenComment = () => setOpenComment(true)
+    const handleCloseComment = () => setOpenComment(false)
+
+    const [commentText, setCommentText] = React.useState('')
+
+    let [postVotes, setPostVotes] = React.useState(0)
+    const handleLike = () => setPostVotes(postVotes += 1)
+    const handleDislike = () => setPostVotes(postVotes -= 1)
     
-    React.useEffect(() => setPostVotes(votes), [votes]);
+    React.useEffect(() => setPostVotes(votes), [votes])
+
+    // File upload
+    const [file, setFile] = React.useState(null)
+    const inputRef = React.useRef(null)
+
+    const handleUploadClick = () => {
+        inputRef.current?.click();
+     }
+     const handleFileChange = (e) => {
+        if (!e.target.files) return;
+        setFile(e.target.files[0]);
+        PostRequest.uploadImage({ picture: file, id })
+      }
+
+
+
+     const handlePostForm = async () => {
+         if (createMode) {
+            return PostRequest.addNew({
+                title: postTitle,
+                username: currentUser,
+            })
+         } else {
+            return PostRequest.edit({
+                title: postTitle,
+                username: currentUser,
+            })
+         }
+         
+     }
+
+     const handleCommentForm = async () => {
+        await CommentRequest.create(commentText, id, currentUser)
+        return handleCloseComment
+     }
+
+     const handleDeletePost = async () => {
+        return PostRequest.remove(id)
+     }
+
     
     return (
         <Card sx={{ maxWidth: 345 }}>
@@ -122,6 +169,7 @@ function Post({
                     <ThumbDownAlt />
                 </IconButton>
                 <IconButton aria-label="add_comment" onClick={handleOpenComment}>
+                    {/* e.key === 27 is ESC */}
                 <Modal
                         open={openComment}
                         onClose={handleCloseComment}
@@ -138,9 +186,11 @@ function Post({
                                 <CommentEdit />
                             </Typography>
                             <Typography>
-                                <TextField label="Standard" variant="standard" id="comment_title" placeholder="Post title" />
-                                <input type="file" id="post_file" accept="image/*" title="Post image" />
-                                <Button onClick={handlePostForm}>Send!</Button>
+                                <TextField label="Standard" variant="standard" id="comment_title" placeholder="Comment title" 
+                                onChange={(e) => setCommentText(e.target.value)} 
+                                />
+                                
+                                <Button onClick={handleCommentForm}>Send!</Button>
                             </Typography>
                         </Box>
                     </Modal>
@@ -160,18 +210,33 @@ function Post({
                                 Press ESC to quit
                             </Typography>
                             <Typography>
-                                <RadioEdit />
+                            <FormControl>
+                              <RadioGroup row name="radio-buttons-post" id="post_option">
+                                <FormControlLabel value="edit" control={<Radio />} label="Edit this post" onClick={() => createMode = false} />
+                                <FormControlLabel value="add_new" control={<Radio />} label="Add new post" onClick={() => createMode = true} />
+                              </RadioGroup>
+                           </FormControl>
                             </Typography>
                             <Typography>
-                                <TextField label="Standard" variant="standard" id="post_title" placeholder="Post title" />
-                                <input type="file" id="post_file" accept="image/*" title="Post image" />
+                                <TextField label="Standard" variant="standard" id="post_title" placeholder="Post title" onChange={(e) => setPostTitle(e.target.value)} />
+                                <Button onClick={handleUploadClick} title="Post image">
+                                    {file ? `${file.name}` : 'Click to select'}
+                                </Button>
+
+                                <input
+                                  type="file"
+                                  accept="image/*"
+                                  ref={inputRef}
+                                  onChange={handleFileChange}
+                                  style={{ display: 'none' }}
+                                />
                                 <Button onClick={handlePostForm}>Send!</Button>
                             </Typography>
                         </Box>
                     </Modal>
                     <Edit />
                 </IconButton>
-                <IconButton aria-label="delete_post" disabled={shouldDisableBtn}>
+                <IconButton aria-label="delete_post" onClick={handleDeletePost} disabled={shouldDisableBtn}>
                     <Delete />
                 </IconButton>
                 <ExpandMore
@@ -184,7 +249,7 @@ function Post({
                     <ExpandMoreIcon />
                 </ExpandMore>
             </CardActions>
-            <PostComment comments={comments} expanded={expanded} />
+            <PostComment comments={comments} text={''} date={timestamp} expanded={expanded} />
         </Card>
     );
 }
