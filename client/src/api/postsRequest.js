@@ -1,6 +1,5 @@
 import doAPIRequest from '../utils/doAPIRequest'
 
-
 export const getByPage = async (pageNumber = 1) => {
   return doAPIRequest(`/post/page/${pageNumber}`);
 }
@@ -18,12 +17,10 @@ export const uploadImage = async (payload) => {
   return doAPIRequest(`/post/${id}/picture`, 'post', picture);
 }
 
-export const edit = async (payload) => {
-    const { id } = payload
-    return doAPIRequest(`/post/${id}`, 'put', payload.body)
+export const edit = async (postId, body) => {
+    return doAPIRequest(`/post/${postId}`, 'put', body)
 }
 
-export const remove = async (payload) => {
-    const { id } = payload
-    return doAPIRequest(`/post/${id}`, 'delete', payload.body)
+export const remove = async (postId) => {
+    return doAPIRequest(`/post/${postId}`, 'delete')
 }

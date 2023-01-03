@@ -42,12 +42,12 @@ function Login() {
                     variant="outlined"
                     onClick={(e) => {
                         e.preventDefault();
-                        if (loginValue === DEMO_DATA && passwordValue === DEMO_DATA) {
+                        if (loginValue === DEMO_DATA && passwordValue === '') {
                             console.log("Demo login succeeded");
                             LocalStorageManager.write(DEMO_DATA);
                             navigate("/posts");
                         } else {
-                            showAlert('errorMsg', 'Please enter valid credentials (demo:demo)');
+                            showAlert('errorMsg', 'Please enter valid credentials - user demo w/o password');
                         }
                     }}
                 >Log In</Button>

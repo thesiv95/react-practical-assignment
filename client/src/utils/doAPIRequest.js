@@ -9,15 +9,26 @@ const baseURL = 'http://localhost:8080'; // change here if required
  * @param {object} body payload if needed
  */
 const doAPIRequest = async (route, method = 'get', body = null) => {
+    try {
+        const response = await axios.request({
+            baseURL,
+            url: route,
+            method,
+            data: body,
+        })
 
-    const response = await axios.request({
-        baseURL,
-        url: route,
-        method,
-        data: body,
-    })
-
-    return response.data;
+        console.log(`
+API Request
+=========================
+route: ${route}
+method: ${method}
+body: ${body ? JSON.stringify(body) : '(no body)'}
+        `)
+    
+        return response.data
+    } catch (error) {
+        console.error('API Request ' + error)
+    }
 }
 
 export default doAPIRequest;

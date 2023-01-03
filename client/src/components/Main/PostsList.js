@@ -1,17 +1,12 @@
 import React from 'react'
-import { DateTime } from 'luxon'
 import { Grid } from '@mui/material'
 import Post from './Post/Post'
+import parseDate from '../../utils/parseDate'
 
 const blankImageURL = 'img-placeholder.jpg'
 
 function countVotes(likes = [], dislikes = []) {
     return likes.length - dislikes.length
-}
-
-function parseDate(dateMs = Date.now()) {
-    dateMs = +dateMs
-    return DateTime.fromMillis(dateMs).toFormat('yyyy LLL dd HH:mm')
 }
 
 function PostsList({ posts }) {
@@ -20,7 +15,8 @@ function PostsList({ posts }) {
         return (
             <Grid item key={post.id + 1}>
                 <Post
-                  key={post.id} 
+                  key={post.id + 100} 
+                  id={post.id} 
                   title={post.title}
                   author={post.username}
                   votes={countVotes(post.likes, post.dislikes)}
